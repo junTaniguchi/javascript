@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="jp">
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
 </head>
 <title>
-    <h1>csv�O���t�����</h1>
+    <h1>csvグラフ化作戦</h1>
 </title>
 <style>
 svg {
@@ -16,11 +16,119 @@ svg {
     height: 300px;
 }
 </style>
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="ng_controller.js"></script>
-<script>
-</script>
 <body>
 
+    <svg></svg>
 </body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://rawgit.com/padolsey-archive/jquery.fn/master/cross-domain-ajax/jquery.xdomainajax.js"></script>
+<script>
+    /*
+    $(function() {
+        $.ajax({
+            type: 'GET',
+            url: "http://6oolab.com/license.txt",
+            dataType: 'html',
+            success: function(data) {
+                $.colorbox({html:data.responseText, width:"80%", height:"80%"});
+            }, error:function(e) {
+                console.log(e);
+            }
+        });
+    });
+    */
+</script>
+<script>
+    /*
+    window.onload = function() {
+        var dataset = [200,100,150,200,160,80,130,110,50,180];
+        // ここのコードを書いていきます
+        d3.select('svg').selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attr({
+                x : function(d, i){ return i * 30; },
+                y : function(d){ return 300 - d; },
+                width : 15,
+                height : function(d){ return d; },
+                fill : '#6fbadd'
+            });
+    }
+    */
+    // Ｘ，Ｙ軸を表示できるようにグラフの周囲にマージンを確保する
+    var margin = {top: 40, right: 80, bottom: 80, left: 80};
+    var width = 800 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+    d3.csv("modified_Counter.csv", function(dataSet){
+        // SVGの表示領域を生成
+        var svg = d3.select("#MyGraph")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + ", " + margin.top + ")");
+        
+        // 読み込んだCSVデータから時間軸の両端を抽出
+        var n = dataSet.length;
+        str_start_time = dataSet[0]["(PDH-CSV4.0)("].substr(6, 4) + "/" + dataSet[0]["(PDH-CSV4.0)("].substr(0, 5) + " " + dataSet[0]["(PDH-CSV4.0)("].substr(-12);
+        str_end_time = dataSet[n-1]["(PDH-CSV4.0)("].substr(6, 4) + "/" + dataSet[n-1]["(PDH-CSV4.0)("].substr(0, 5) + " " + dataSet[n-1]["(PDH-CSV4.0)("].substr(-12);
+        time_start = new Date(str_start_time);
+        time_end = new Date(str_end_time);
+        console.log(time_start);
+        console.log(time_end);
+        
+        // 時間軸のスケール関数を生成
+        var time_scale = d3.time.scale()
+            .domain([time_start, time_end])
+            .range([0, width]);
+        
+        // 縦軸のスケール関数を生成
+        var y_scale = d3.scale.linear()
+            .domain([14000,18000])
+            .range([height, 0]);
+        var line = d3.svg.line()
+            .x(function(d,i){
+            var tmp = new Date(d["(PDH-CSV4.0)("]);
+            return time_scale(tmp);
+            })
+            .y(function(d,i){
+            return y_scale(d["TANIGUCHIJUNMemoryAvailableMBytes"]);      
+            });
+
+        // 折れ線グラフを生成
+        svg.append("path")
+            .attr("class", "line")
+            .attr("d", line(dataSet));
+        
+        // Ｘ軸を描画
+        svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.svg.axis()
+                        .scale(time_scale)
+                        .orient("bottom")
+                        .tickFormat(function(d,i){
+                            var fmtFunc = d3.time.format("%b-%d");
+                            return fmtFunc(d);
+                        })
+            )
+            .selectAll("text")
+            .attr("transform", "rotate(45)")
+            .attr("dy", 10)
+            .attr("dx", 10)
+            .style("text-anchor", "start");
+        
+        // Ｙ軸を描画
+        svg.append("g")
+            .attr("class", "axis")
+            .call(d3.svg.axis()
+            .scale(y_scale)
+            .orient("left")
+            );
+
+    });
+
+</script>
 </html>
