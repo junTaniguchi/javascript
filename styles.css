@@ -1,0 +1,92 @@
+@charset "utf-8";
+
+/* common */
+
+body {
+    font-size :14px;
+    font-family: "Sawarabi Gothic";
+    color :#333;
+}
+
+a{
+    text-decoration: none;
+}
+
+p{
+    line-height: 2;
+    font-family: "Sawarabi Gothic";
+}
+
+.btn{
+    display: inline-block;
+    width: 300px;
+    line-height: 45px;
+    background: #fff;
+    text-align: center;
+    color: #7ACCB8;
+    border-radius: 5px;
+}
+
+.btn:hover{
+    opacity: 1;
+}
+
+img.shadow{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+section{
+    padding: 90px 0;
+}
+
+section:nth-child(odd){
+    background: #f8f8f8;
+}
+
+section .container{
+    width: 820px;
+    margin: 0 auto;
+}
+
+section h2{
+    font-size: 26px;
+    text-align: center;
+    margin: 0 0 90px;
+    font-weight: normal;
+}
+
+/* header */
+
+header{
+    background: #7ACCB8;
+    background-size: cover;
+}
+
+header .container{
+    width:  1020px;
+    margin: 0 auto;
+    height: 320px;
+    padding-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+header h1, header p{
+    color: #fff;
+}
+
+header p{
+    padding-top:40px;
+}
+
+header h1{
+    font-size: 34px;
+    margin-bottom: 50px;
+    line-height: 1.1;
+    font-family: 'Montserrat', sans-serif;
+}
+header img{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
