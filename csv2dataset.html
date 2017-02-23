@@ -6,51 +6,35 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link href="path/to/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccss/sawarabigothic.css" rel="stylesheet" />
 </head>
 
-
-<style>
-svg {
-    border: solid 1px #333;
-    background: #f5f5f5;
-    padding: 20px;
-    width: 600px;
-    height: 300px;
-}
-
-</style>
 <body>
     <header>
         <div class="container">
             <p>
-                パフォーマンスモニターより変換した<br>
-                CSVファイルのデータを元にグラフ化できる
+                パフォーマンスモニターのデータを元に<br>
+                csvファイルをグラフ化するツール
             </p>
             <h1>Performance Monitor<br>
                 D3.js Visualization</h1>
-            <a class="btn" href="#">
-                ファイルを選択する<i class="fa fa-firefox" aria-hidden="true"></i>
-            </a>
+            <input type="file" id="file" style="display:none;" onchange="$('#fake_input_file').val($(this).val())">
+            <input type="button" value="ファイル選択" onClick="$('#file').click();" class="btn_select">
+            <input id="fake_input_file" readonly type="text" value=""  onClick="$('#file').click();">
+            <input type="submit" id="make" value="作成" class="btn">
+            
             <img src="img/D3js.png" width="480" height="280" alt="D3" class="shadow">
     </header>
-    <section class="csv_dataframe">
-        <h2>csvファイルのテーブル化</h2>
-        <div class="container">
-        </div>
-    </section>
     <section class="csv_gragh">
         <h2>csvファイルのグラフ化</h2>
         <div class="container">
+            <svg></svg>
         </div>
     </section>
-    <svg></svg>
 </body>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://rawgit.com/padolsey-archive/jquery.fn/master/cross-domain-ajax/jquery.xdomainajax.js"></script>
-<script>
-
-</script>
+<script type="text/javascript" src="js/d32gragh.js"></script>
 </html>
